@@ -1,28 +1,24 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="pug">
+  q-layout(view='hHh lpR fFf')
+    q-header.bg-primary.text-white(height-hint='98' align='center')
+      q-toolbar
+        q-toolbar-title
+          | Pokémon Rest API Test SPA
+      q-tabs.line(align='center')
+        q-route-tab(to='/pokemons' label='Pokémons')
+        q-route-tab(to='/regions' label='Continentes')
+    q-page-container
+      router-view
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: 'LayoutDefault'
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="sass">
+  .line
+    border-top: solid 1px rgba(0,0,0,0.2)
 </style>
