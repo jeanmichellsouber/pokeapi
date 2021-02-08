@@ -1,28 +1,12 @@
 <template lang="pug">
   .page
-    h4.text-center Pokémons List
+    h4.text-center Location
     .text-center(v-if='isLoading')
       q-spinner-ios(color='primary' size='2em')
-    .wrapper(v-if='!isLoading')
-      .text-center
-        //- q-input(label='Insira o nome de um pokémon para buscar' v-on:keyup="")
-        //- br
-        q-toggle(
-          :false-value="false"
-          :label="`Ordenar alfabeticamente`"
-          :true-value="true"
-          color="green"
-          v-model="sorting"          
-        )        
+    .wrapper(v-if='!isLoading') 
       .content
-        q-item.division(clickable='' v-ripple='' v-for='pokeitem in pokeitems' :key='pokeitem.id' :to="`/pokemon/${pokeitem.id}`")
-          q-item-section(side='')
-            q-avatar(rounded='' size='60px')
-              img(:src='pokeitem.sprites.front_default')
-          q-item-section
-            q-item-label
-              strong {{pokeitem.name.toUpperCase()}}
-            q-item-label(caption='') Peso: {{pokeitem.weight}}
+        q-item.division(clickable='' v-ripple='' v-for='region in regions' :key='region.id')
+          p {{region.name}}
       .text-center
         p Página atual: {{page + 1}}
         q-btn(outline rounded color="primary" @click="this.decrement" :disabled="prevPage") Página anterior
@@ -54,13 +38,13 @@
 <script>
 
 export default {
-  name: 'Pokemons',
+  name: 'Location',
   components: {
     
   },
   data() {
     return {
-      pokeitems: [],
+      regions: [],
       isLoading: true,
       page: 0,
       nextPage: true,
@@ -76,17 +60,18 @@ export default {
       if(this.sorting){
         this.sortByNameInitials()
       } else {
-        this.pokeitems.sort( () => Math.random() - 0.5) 
+        this.regions.sort( () => Math.random() - 0.5) 
       }
     }
   },
   methods: {
     callService(pageNumber){
       
-      this.pokeitems = [];
+      this.regions = [];
       this.isLoading = true;
 
-      this.axios.get(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=${pageNumber*5}0`)
+      this.axios.get(`https://pokeapi.co/api/v2/region?offset=${pageNumber*5}0&limit=20`)
+      // this.axios.get(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=${pageNumber*5}0`)
       .then((response) => {
 
         let nextButton = response.data.next;
@@ -99,27 +84,17 @@ export default {
         const items = response.data.results;
         const itemsQuantity = items.length;
 
-        let allItems = [];
-
         items.forEach((element) => {
 
           this.axios.get(element.url)
           .then((response) => {
             
-            allItems.push(response.data);
+            this.regions.push(response.data);
 
             if (i === itemsQuantity - 1) {
 
               // para de carregar
               this.isLoading = false;
-
-              if(this.sorting){
-                allItems = allItems.sort((a, b) => (a.name > b.name) ? 1 : -1)
-
-                this.pokeitems = allItems;
-              } else {
-                this.pokeitems = allItems;
-              }
             }
 
             i++;          
@@ -143,7 +118,7 @@ export default {
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera      
     },
     sortByNameInitials(){
-      this.pokeitems.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.regions.sort((a, b) => (a.name > b.name) ? 1 : -1)
     }
   },
 }

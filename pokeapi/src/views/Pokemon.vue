@@ -66,13 +66,5 @@ export default {
         this.scrollUp()
       })    
   },
-  watch: {
-    sorting: function(){
-
-    }
-  },
-  methods: {
-    
-  },
 }
 </script>

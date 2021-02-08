@@ -6,7 +6,7 @@
           | Pokémon Rest API Test SPA
       q-tabs.line(align='center')
         q-route-tab(to='/pokemons' label='Pokémons')
-        q-route-tab(to='/regions' label='Continentes')
+        q-route-tab(to='/location' label='Location')
     q-page-container
       router-view
 </template>
